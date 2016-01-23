@@ -4,6 +4,7 @@ var Inert = require('inert');
 
 var login_handler = require("./js/login.js")
 var create_handler = require("./js/create.js")
+var release_handler = require("./js/release.js")
 //var stop_handler = require("./js/remove.js")
 //var upgrade_handler = require("./js/move.js")
 //var inputs_handler = require("./js/edit.js")
@@ -29,6 +30,7 @@ io.on("connection", function (socket) {
 		socket.on("edit", stop_handler.bind(null, socket, posts_it))
 		//	socket.on("upgrade", upgrade_handler.bind(null, socket, players))
 		//	socket.on("inputs", inputs_handler.bind(null, socket, players))
+		socket.on("release", release_handler.bind(null, socket, posts_it))
 
 		socket.once("disconnect", function () {
 				if (socket.pseudo) {
