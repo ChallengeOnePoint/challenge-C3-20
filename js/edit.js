@@ -1,7 +1,7 @@
 var config = require("../config.js")
 var error = require("./error_formater.js")
 
-function edit_handler (socket, posts_it, data, pseudo) {
+function edit_handler (socket, posts_it, data) {
 	
 	var p = {
 		id: uuid.v1(),
@@ -17,6 +17,12 @@ function edit_handler (socket, posts_it, data, pseudo) {
 	{
 		if (posts_it[i].id == data.id)
 		{
+			if (posts_it[i].locked)
+			{
+				socket.emit("err", error("edit", data.id, "this postit is locked!"))
+				return;
+			}
+	
 			if (data.title)
 			{
 				posts_it[i].title == data.title	
@@ -38,7 +44,7 @@ function edit_handler (socket, posts_it, data, pseudo) {
 			}
 
 			posts_it[i].locked = true
-			posts_it[i].locker = pseudo
+			posts_it[i].locker = data.locker
 
 			break
 		}
