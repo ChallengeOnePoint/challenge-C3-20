@@ -44,6 +44,23 @@
     $('#view-login').hide();
     $('#view-postits').show();
 
+    // Build des postits
+
+    var list = '';
+    listPostits.forEach(function(postit) {
+
+      list +=
+        '<div class="postit col-md-3">'+
+        '  <button class="pull-left btn btn-danger btn-sm glyphicon glyphicon-remove remove"></button>'+
+        '  <h4>'+ postit.title +'</h4>'+
+        '  <div id="p_'+ postit.id +'" class="postit-content" '+ (!postit.locked ? 'contenteditable':'') +'>'+
+        '    '+postit.desc +
+        '  </div>'+
+        '</div>';
+
+      $('.postits-container').empty().append(list);
+    });
+
     /*
     listPostits = [
       {
@@ -55,6 +72,71 @@
       }
     ]
     */
+  });
+
+  /**
+   * Création d'un postit
+   */
+
+  app.socket.on('new_postit', function(postit) {
+    var postit =
+      '<div class="postit col-md-3">'+
+      '  <button class="pull-left btn btn-danger btn-sm glyphicon glyphicon-remove remove"></button>'+
+      '  <h4>'+ postit.title +'</h4>'+
+      '  <div id="'+ postit.id +'" class="postit-content" '+ (!postit.locked ? 'contenteditable':'') +'>'+
+      '    '+postit.desc +
+      '  </div>'+
+      '</div>';
+
+    $('.postits-container').append(postit);
+  });
+
+  $('#create').on('click', function createPostit() {
+    app.socket.emit('create');
+  });
+
+  /** 
+   * Ecoute d'un evenement lock/release
+   */
+
+  $('.postits-container').on('keydown', '.postit-content', function onFocus() {
+    var $postit = $(this).parents('.postit');
+
+    var sending = {
+      "id": $postit.find('.postit-content').attr('id'),
+      "locker": app.pseudo,
+      "title": $postit.find('h4').text(),
+      "desc": $postit.find('.postit-content').text()
+    }
+    console.log(sending)
+    app.socket.emit('edit', sending);
+  });
+
+  app.socket.on('update_postit', function(postit) {
+    console.log('updating '+postit.id)
+    var $postit = $('#'+postit.id).parents('.postit');
+
+    var postitContent =
+      '  <button class="pull-left btn btn-danger btn-sm glyphicon glyphicon-remove remove"></button>'+
+      '  <h4>'+ postit.title +'</h4>'+
+      '  <div id="'+ postit.id +'" class="postit-content">'+
+      '    '+postit.desc +
+      '  </div>'+
+      '  <div class="postit-status">'+
+      '    Actuellement en écriture par <b>'+postit.locker+'</b>'+
+      '  </div>';
+
+    $postit.empty().html(postitContent);
+  });
+
+  app.socket.on('release', function(postitId) {
+    var postitContent = $('#'+postitId).attr('contenteditable', 'true');
+  });
+
+  $('[contenteditable]').on('blur', function onBlur() {
+    var id = $(this).attr('id');
+
+    app.socket.emit('release', id);
   });
 
 })(jQuery);
