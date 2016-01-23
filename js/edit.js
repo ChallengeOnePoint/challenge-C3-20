@@ -1,7 +1,7 @@
 var config = require("../config.js")
 var error = require("./error_formater.js")
 
-function edit_handler (socket, posts_it, data) {
+function edit_handler (socket, posts_it, data, pseudo) {
 	
 	var p = {
 		id: uuid.v1(),
@@ -38,6 +38,7 @@ function edit_handler (socket, posts_it, data) {
 			}
 
 			posts_it[i].locked = true
+			posts_it[i].locker = pseudo
 
 			break
 		}
