@@ -8,8 +8,8 @@ function create_handler (socket, posts_it) {
 		id: uuid.v1(),
 		locked: false,
 		locker: "",
-		title: "",
-		desc: "",
+		title: "new Post Tits!",
+		desc: "A brand new Post Tits!",
 		x: 0,
 		y: 0
 	}
