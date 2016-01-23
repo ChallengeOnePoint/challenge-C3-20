@@ -25,8 +25,8 @@ io.on("connection", function (socket) {
 
 		socket.pseudo = null
 
-		socket.on("login", login_handler.bind(null, socket, users, posts_it, pseudo))
-		socket.on("create", create_handler.bind(null, socket, users, posts_it))
+		socket.on("login", login_handler.bind(null, socket, users, posts_it))
+		socket.on("create", create_handler.bind(null, socket, posts_it))
 		//	socket.on("stop", stop_handler.bind(null, socket, users))
 		//	socket.on("upgrade", upgrade_handler.bind(null, socket, players))
 		//	socket.on("inputs", inputs_handler.bind(null, socket, players))
