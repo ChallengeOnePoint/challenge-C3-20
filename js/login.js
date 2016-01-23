@@ -1,5 +1,5 @@
 var config = require("../config.js")
-var error = require("../error_formater.js")
+var error = require("./error_formater.js")
 
 function login_handler (socket, users, posts_it, pseudo) {
 	
@@ -31,7 +31,7 @@ function login_handler (socket, users, posts_it, pseudo) {
 
 	socket.pseudo = pseudo
 
-	socket.emit("posts_it", posts_it)
+	socket.emit("postits", posts_it)
 }
 
 module.exports = login_handler
