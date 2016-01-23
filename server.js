@@ -22,36 +22,35 @@ app.register(Inert, () => {});
 
 io.on("connection", function (socket) {
 
-	socket.pseudo = null
+		socket.pseudo = null
 
-	socket.on("login", login_handler.bind(null, socket, users, posts_it, pseudo))
-	socket.on("create", create_handler.bind(null, socket, users, posts_it))
-//	socket.on("stop", stop_handler.bind(null, socket, users))
-//	socket.on("upgrade", upgrade_handler.bind(null, socket, players))
-//	socket.on("inputs", inputs_handler.bind(null, socket, players))
+		socket.on("login", login_handler.bind(null, socket, users, posts_it, pseudo))
+		socket.on("create", create_handler.bind(null, socket, users, posts_it))
+		//	socket.on("stop", stop_handler.bind(null, socket, users))
+		//	socket.on("upgrade", upgrade_handler.bind(null, socket, players))
+		//	socket.on("inputs", inputs_handler.bind(null, socket, players))
 
-	socket.once("disconnect", function () {
-		if (socket.pseudo) {
-			//console.log("player " + socket.pseudo + " left the game")
-			users[socket.pseudo] = null
-			delete users[socket.pseudo]
-		}
-	})
+		socket.once("disconnect", function () {
+				if (socket.pseudo) {
+						//console.log("player " + socket.pseudo + " left the game")
+						users[socket.pseudo] = null
+						delete users[socket.pseudo]
+				}
+		})
 })
 
 app.route({
-				method: 'GET',
-				path: '/{user*}',
-				handler: function (request, reply) {
-								const user = request.params.user ? request.params.user : 'public/index.html';
-								console.log(user);        
-								reply.file(user);
+		method: 'GET',
+		path: '/{path*}',
+		handler: function (request, reply) {
+				const path = request.params.path ? request.params.path : 'public/index.html';
+				reply.file(path);
 
-				}
+		}
 });
 
 app.start(function () {
-				console.log("post it server runs!")
+		console.log("post it server runs!")
 })
 
 
