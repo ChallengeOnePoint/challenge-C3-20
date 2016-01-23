@@ -1,18 +1,23 @@
 (function($) {
   'use strict';
 
+  var app = {};
+
+  app.socket = io('http://localhost:4000');
+  app.pseudo = null;
+
   /**
    * Gestion des erreurs de l'application
    */
 
-  socket.on('err', function(obj) {
+  app.socket.on('err', function(obj) {
     if (obj.request_name === 'login')
       return handleLoginError(obj);
   });
 
   // Erreur pendant la connexion
   function handleLoginError(obj) {
-    // obj.description
+    console.error(obj.description);
   }
 
   /**
@@ -26,16 +31,19 @@
   function onLogin(evt) {
     evt.preventDefault();
 
-    console.log('Envoi socket.login = ', $('#pseudo').val())
-
-    socket.emit('login', $('#pseudo').val());
+    app.pseudo = $('#pseudo').val();
+    app.socket.emit('login', pseudo);
   }
 
   /**
    * Listing des postits
    */
 
-  socket.on('postits', function(listPostits) {
+  app.socket.on('postits', function(listPostits) {
+    
+    $('#view-login').hide();
+    $('#view-postits').show();
+
     /*
     listPostits = [
       {
