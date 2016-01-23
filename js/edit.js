@@ -2,7 +2,7 @@ var config = require("../config.js")
 var error = require("./error_formater.js")
 
 function edit_handler (socket, posts_it, data) {
-	
+
 	for (var i = 0; i < posts_it.length; ++i)
 	{
 		if (posts_it[i].id == data.id)
