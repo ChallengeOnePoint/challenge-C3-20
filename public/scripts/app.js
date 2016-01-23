@@ -1,7 +1,16 @@
+
+function onBlur() {
+    console.log('BLUR!')
+    var id = $(this).attr('id');
+
+    app.socket.emit('release', id);
+  }
+
 (function($) {
   'use strict';
 
   var app = {};
+  window.app = app;
 
   app.socket = io('http://localhost:4000');
   app.pseudo = null;
@@ -83,7 +92,7 @@
       '<div class="postit col-md-3">'+
       '  <button class="pull-left btn btn-danger btn-sm glyphicon glyphicon-remove remove"></button>'+
       '  <h4>'+ postit.title +'</h4>'+
-      '  <div id="'+ postit.id +'" class="postit-content" '+ (!postit.locked ? 'contenteditable':'') +'>'+
+      '  <div id="'+ postit.id +'" class="postit-content" '+ (!postit.locked ? 'contenteditable onblur="onBlur()"':'') +'>'+
       '    '+postit.desc +
       '  </div>'+
       '</div>';
@@ -113,10 +122,10 @@
   });
 
   app.socket.on('update_postit', function(postit) {
-    console.log('updating '+postit.id)
+    console.log('updating ', postit.desc);
     var $postit = $('#'+postit.id).parents('.postit');
 
-    var postitContent =
+    var postitContent =''+
       '  <button class="pull-left btn btn-danger btn-sm glyphicon glyphicon-remove remove"></button>'+
       '  <h4>'+ postit.title +'</h4>'+
       '  <div id="'+ postit.id +'" class="postit-content">'+
@@ -126,17 +135,13 @@
       '    Actuellement en écriture par <b>'+postit.locker+'</b>'+
       '  </div>';
 
-    $postit.empty().html(postitContent);
+    $postit.empty().html(postitContent)
   });
 
   app.socket.on('release', function(postitId) {
     var postitContent = $('#'+postitId).attr('contenteditable', 'true');
   });
 
-  $('[contenteditable]').on('blur', function onBlur() {
-    var id = $(this).attr('id');
 
-    app.socket.emit('release', id);
-  });
 
 })(jQuery);
