@@ -2,16 +2,8 @@ var config = require("../config.js")
 var error = require("./error_formater.js")
 
 function edit_handler (socket, posts_it, data) {
-	
-	var p = {
-		id: uuid.v1(),
-		locked: false,
-		locker: "",
-		title: "",
-		desc: "",
-		x: 0,
-		y: 0
-	}
+
+	console.log("edit:", data);
 
 	for (var i = 0; i < posts_it.length; ++i)
 	{
