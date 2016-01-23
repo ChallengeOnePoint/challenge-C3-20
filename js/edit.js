@@ -3,13 +3,12 @@ var error = require("./error_formater.js")
 
 function edit_handler (socket, posts_it, data) {
 
-	console.log("edit:", data);
 
 	for (var i = 0; i < posts_it.length; ++i)
 	{
 		if (posts_it[i].id == data.id)
 		{
-			if (posts_it[i].locked)
+			if (posts_it[i].locked && posts_it[i].locker != data.locker)
 			{
 				socket.emit("err", error("edit", data.id, "this postit is locked!"))
 				return;
@@ -41,6 +40,7 @@ function edit_handler (socket, posts_it, data) {
 			break
 		}
 	}
+	console.log("edit:", posts_it[i]);
 
 	//socket.emit("update postit", posts_it[i])
 	socket.broadcast.emit("update_postit", posts_it[i])

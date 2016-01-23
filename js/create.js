@@ -5,7 +5,7 @@ var error = require("./error_formater.js")
 function create_handler (socket, posts_it) {
 	
 	var p = {
-		id: uuid.v1() + "",
+		id: uuid.v1() + '',
 		locked: false,
 		locker: "",
 		title: "new Post Tits!",
