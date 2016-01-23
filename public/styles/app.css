@@ -6,6 +6,11 @@
   display: block;
 }
 
+body {
+    background-image: url("/images/postitwall.jpg");
+    background-color: #eee;
+}
+
 
 .form-signin {
   max-width: 330px;
