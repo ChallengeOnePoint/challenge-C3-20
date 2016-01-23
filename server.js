@@ -1,6 +1,7 @@
 var Hapi = require("hapi")
 var config = require("./config.js")
-var Path = require('path')
+//var Path = require('path')
+//
 //var login_handler = require("./js/login.js")
 //var distance_handler = require("./js/create.js")
 //var stop_handler = require("./js/remove.js")
@@ -8,23 +9,14 @@ var Path = require('path')
 //var inputs_handler = require("./js/edit.js")
 //var inputs_handler = require("./js/release.js")
 
-var server = new Hapi.Server({
-	connections: {
-		routes: {
-			files: {
-				relativeTo: Path.join(__dirname, 'public')
-			}
-		},
+var app = new Hapi.Server()
 
-	}
-})
+app.connection({ port: 4000, labels:['api'] })
+
+var io = require("socket.io")(app.select('api').listener)
 
 var users = []
 var post_its = []
-
-server.connection(config.ws_port)
-
-var io = require("socket.io")(server.select("game").listener)
 
 io.on("connection", function (socket) {
 
@@ -46,7 +38,17 @@ io.on("connection", function (socket) {
 })
 
 
-server.start(function () {
+app.route({
+    method: 'GET',
+    path: '/{param*}',
+    handler: {
+        directory: {
+            path: 'public'
+        }
+    }
+});
+
+app.start(function () {
 	console.log("post it server runs!")
 })
 
