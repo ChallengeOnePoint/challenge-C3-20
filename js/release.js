@@ -6,7 +6,8 @@ function release_handler (socket, posts_it, id) {
 						if (post.id == id)
 								{
 										post.locked = false;
-										socket.broadcast.emit("release", id)
+										socket.broadcast.emit("release", id);
+										socket.emit("release", id);
 										return ;
 								}
 				}
