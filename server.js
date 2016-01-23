@@ -1,7 +1,7 @@
 var Hapi = require("hapi")
 var config = require("./config.js")
-//var Path = require('path')
-//
+var Inert = require('inert');
+
 var login_handler = require("./js/login.js")
 var create_handler = require("./js/create.js")
 //var stop_handler = require("./js/remove.js")
@@ -17,6 +17,8 @@ var io = require("socket.io")(app.select('api').listener)
 
 var users = []
 var posts_it = []
+
+app.register(Inert, () => {});
 
 io.on("connection", function (socket) {
 
@@ -37,19 +39,19 @@ io.on("connection", function (socket) {
 	})
 })
 
-
 app.route({
-    method: 'GET',
-    path: '/{param*}',
-    handler: {
-        directory: {
-            path: 'public'
-        }
-    }
+				method: 'GET',
+				path: '/{user*}',
+				handler: function (request, reply) {
+								const user = request.params.user ? request.params.user : 'public/index.html';
+								console.log(user);        
+								reply.file(user);
+
+				}
 });
 
 app.start(function () {
-	console.log("post it server runs!")
+				console.log("post it server runs!")
 })
 
 

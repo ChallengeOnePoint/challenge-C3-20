@@ -5,6 +5,7 @@
   "dependencies": {
     "hapi": "^12.1.0",
     "node-uuid": "^1.4.7",
+    "inert": "^3.2.0",
     "path": "^0.12.7",
     "socket.io": "^1.4.4"
   }
