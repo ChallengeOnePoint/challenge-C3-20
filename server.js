@@ -45,8 +45,8 @@ app.route({
 		method: 'GET',
 		path: '/{path*}',
 		handler: function (request, reply) {
-				const path = request.params.path ? request.params.path : 'public/index.html';
-				reply.file(path);
+				const path = request.params.path ? request.params.path : 'index.html';
+				reply.file('public/' + path);
 
 		}
 });
