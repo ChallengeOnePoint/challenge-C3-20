@@ -1,15 +1,12 @@
 var Hapi = require("hapi")
 var config = require("./config.js")
-var Inert = require('inert');
+var Inert = require("inert")
 
 var login_handler = require("./js/login.js")
 var create_handler = require("./js/create.js")
 var release_handler = require("./js/release.js")
 var edit_handler = require("./js/edit.js")
-//var stop_handler = require("./js/remove.js")
-//var upgrade_handler = require("./js/move.js")
-//var inputs_handler = require("./js/edit.js")
-//var inputs_handler = require("./js/release.js")
+var remove_handler = require("./js/remove.js")
 
 var app = new Hapi.Server()
 
@@ -20,7 +17,7 @@ var io = require("socket.io")(app.select('api').listener)
 var users = []
 var posts_it = []
 
-app.register(Inert, () => {});
+app.register(Inert, () => {})
 
 io.on("connection", function (socket) {
 
@@ -29,6 +26,7 @@ io.on("connection", function (socket) {
 		socket.on("login", login_handler.bind(null, socket, users, posts_it))
 		socket.on("create", create_handler.bind(null, socket, posts_it))
 		socket.on("edit", edit_handler.bind(null, socket, posts_it))
+		socket.on("remove", remove_handler.bind(null, socket, posts_it))
 		socket.on("release", release_handler.bind(null, socket, posts_it))
 
 		socket.once("disconnect", function () {
@@ -50,8 +48,8 @@ app.route({
 		method: 'GET',
 		path: '/{path*}',
 		handler: function (request, reply) {
-				const path = request.params.path ? request.params.path : 'public/index.html';
-				reply.file(path);
+				const path = request.params.path ? request.params.path : 'index.html'
+				reply.file('public/' + path)
 
 		}
 });
