@@ -16,8 +16,8 @@ function create_handler (socket, posts_it) {
 
 	posts_it[posts_it.length] = p;
 
-	socket.emit("new post_it", p)
-	socket.broadcast.emit("new post_it", p)
+	socket.emit("new_postit", p)
+	socket.broadcast.emit("new_postit", p)
 }
 
 module.exports = create_handler
