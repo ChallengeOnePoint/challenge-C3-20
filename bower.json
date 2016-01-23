@@ -1,0 +1,22 @@
+{
+  "name": "Post-tits",
+  "description": "JS challenge",
+  "main": "",
+  "authors": [
+    "jmpp <jmclery@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ChallengeOnePoint/challenge-C3-20",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}
